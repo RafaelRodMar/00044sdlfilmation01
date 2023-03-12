@@ -91,21 +91,100 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 void Game::handleEvents() {
 	InputHandler::Instance()->update();
+
+	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_P)){
+		sentido = AUM_X;
+		if (x < 72 &&
+			(x1 > x0 + 8 || x1 < x0 + 8 || y1 - y0 >= 8 || y0 - y1 >= 8 || z1 - z0 >= 8 || z0 - z1 >= 8) &&
+			(x2 > x0 + 8 || x2 < x0 + 8 || y2 - y0 >= 8 || y0 - y2 >= 8 || z2 - z0 >= 8 || z0 - z2 >= 8) &&
+			(x3 > x0 + 8 || x3 < x0 + 8 || y3 - y0 >= 8 || y0 - y3 >= 8 || z3 - z0 >= 8 || z0 - z3 >= 8) &&
+			(x4 > x0 + 8 || x4 < x0 + 8 || y4 - y0 >= 8 || y0 - y4 >= 8 || z4 - z0 >= 8 || z0 - z4 >= 8)) {
+			x++; objetos_zona_1[0][2]++;
+		}
+	}
+	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_A)) {
+		sentido = AUM_Z;
+		if (z < 72 &&
+			(x1 - x0 >= 8 || x0 - x1 >= 8 || y1 - y0 >= 8 || y0 - y1 >= 8 || z1 > z0 + 8 || z1 < z0 + 8) &&
+			(x2 - x0 >= 8 || x0 - x2 >= 8 || y2 - y0 >= 8 || y0 - y2 >= 8 || z2 > z0 + 8 || z2 < z0 + 8) &&
+			(x3 - x0 >= 8 || x0 - x3 >= 8 || y3 - y0 >= 8 || y0 - y3 >= 8 || z3 > z0 + 8 || z3 < z0 + 8) &&
+			(x4 - x0 >= 8 || x0 - x4 >= 8 || y4 - y0 >= 8 || y0 - y4 >= 8 || z4 > z0 + 8 || z4 < z0 + 8)) {
+			z++; objetos_zona_1[0][4]++;
+		}
+	}
+	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_O)) {
+		sentido = DIS_X;
+		if (x > 0 &&
+			(x1<x0 - 8 || x1>x0 - 8 || y1 - y0 >= 8 || y0 - y1 >= 8 || z1 - z0 >= 8 || z0 - z1 >= 8) &&
+			(x2<x0 - 8 || x2>x0 - 8 || y2 - y0 >= 8 || y0 - y2 >= 8 || z2 - z0 >= 8 || z0 - z2 >= 8) &&
+			(x3<x0 - 8 || x3>x0 - 8 || y3 - y0 >= 8 || y0 - y3 >= 8 || z3 - z0 >= 8 || z0 - z3 >= 8) &&
+			(x4<x0 - 8 || x4>x0 - 8 || y4 - y0 >= 8 || y0 - y4 >= 8 || z4 - z0 >= 8 || z0 - z4 >= 8)) {
+			x--; objetos_zona_1[0][2]--;
+		}
+	}
+	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_Q)) {
+		sentido = DIS_Z;
+		if (z > 0 &&
+			(x1 - x0 >= 8 || x0 - x1 >= 8 || y1 - y0 >= 8 || y0 - y1 >= 8 || z1<z0 - 8 || z1>z0 - 8) &&
+			(x2 - x0 >= 8 || x0 - x2 >= 8 || y2 - y0 >= 8 || y0 - y2 >= 8 || z2<z0 - 8 || z2>z0 - 8) &&
+			(x3 - x0 >= 8 || x0 - x3 >= 8 || y3 - y0 >= 8 || y0 - y3 >= 8 || z3<z0 - 8 || z3>z0 - 8) &&
+			(x4 - x0 >= 8 || x0 - x4 >= 8 || y4 - y0 >= 8 || y0 - y4 >= 8 || z4<z0 - 8 || z4>z0 - 8)) {
+			z--; objetos_zona_1[0][4]--;
+		}
+		
+	}
+	if (InputHandler::Instance()->isKeyDown(SDL_SCANCODE_SPACE)) {
+		if (y < 32 &&
+			(x1 - x0 >= 8 || x0 - x1 >= 8 || y1 > y0 + 8 || y1 < y0 + 8 || z1 - z0 >= 8 || z0 - z1 >= 8) &&
+			(x2 - x0 >= 8 || x0 - x2 >= 8 || y2 > y0 + 8 || y2 < y0 + 8 || z2 - z0 >= 8 || z0 - z2 >= 8) &&
+			(x3 - x0 >= 8 || x0 - x3 >= 8 || y3 > y0 + 8 || y3 < y0 + 8 || z3 - z0 >= 8 || z0 - z3 >= 8) &&
+			(x4 - x0 >= 8 || x0 - x4 >= 8 || y4 > y0 + 8 || y4 < y0 + 8 || z4 - z0 >= 8 || z0 - z4 >= 8)) {
+			y += 4; objetos_zona_1[0][3] += 4;
+		}
+	}
 }
 
 void Game::update() {
 	//update the position of the cubes
-	for (cubo = 0; xyz_objetos_zona_1[cubo][0] != ULTIMO; cubo++)
+	x0 = objetos_zona_1[0][2];
+	y0 = objetos_zona_1[0][3];
+	z0 = objetos_zona_1[0][4];
+
+	x1 = objetos_zona_1[1][2];
+	y1 = objetos_zona_1[1][3];
+	z1 = objetos_zona_1[1][4];
+
+	x2 = objetos_zona_1[2][2];
+	y2 = objetos_zona_1[2][3];
+	z2 = objetos_zona_1[2][4];
+
+	x3 = objetos_zona_1[3][2];
+	y3 = objetos_zona_1[3][3];
+	z3 = objetos_zona_1[3][4];
+
+	x4 = objetos_zona_1[4][2];
+	y4 = objetos_zona_1[4][3];
+	z4 = objetos_zona_1[4][4];
+
+	//get the distance of every object from the origin 0,0,0
+	//adding the three coordinates x,y,z
+	dist[0][0] = x0 + y0 + z0; dist[0][1] = 0; //0:distance, 1:number of the object.
+	dist[1][0] = x1 + y1 + z1; dist[1][1] = 1;
+	dist[2][0] = x2 + y2 + z2; dist[2][1] = 2;
+	dist[3][0] = x3 + y3 + z3; dist[3][1] = 3;
+	dist[4][0] = x4 + y4 + z4; dist[4][1] = 4;
+
+	//sort objects with bubble method by distance.
+	for (n = NUM_OBJETOS - 1; n > 0; n--)
 	{
-		if (xyz_objetos_zona_1[cubo][2] == 0)
+		for (m = 0; m < n; m++)
 		{
-			xyz_objetos_zona_1[cubo][7] = +2;
+			if (dist[m][0] > dist[m + 1][0])
+			{
+				temp = dist[m][0]; dist[m][0] = dist[m + 1][0]; dist[m + 1][0] = temp;
+				temp = dist[m][1]; dist[m][1] = dist[m + 1][1]; dist[m + 1][1] = temp;
+			}
 		}
-		else if (xyz_objetos_zona_1[cubo][2] == 72)
-		{
-			xyz_objetos_zona_1[cubo][7] = -2;
-		}
-		xyz_objetos_zona_1[cubo][2] += xyz_objetos_zona_1[cubo][7];
 	}
 }
 
@@ -130,33 +209,73 @@ void Game::render() {
 	}
 
 	//draw objects
-	for (bloq = 0; xyz_objetos_zona_1[bloq][0] != ULTIMO; bloq++) {
-		x = xyz_objetos_zona_1[bloq][2];
-		y = xyz_objetos_zona_1[bloq][3];
-		z = xyz_objetos_zona_1[bloq][4];
+	for (n = 0; n < NUM_OBJETOS; n++)
+	{
+		//if the object is the ball.
+		if (dist[n][1] == 0)
+		{
+			x = objetos_zona_1[0][2];
+			y = objetos_zona_1[0][3];
+			z = objetos_zona_1[0][4];
 
-		//one increment in x or z is 2 horizontal pixels.
-		//one increment in y is 2 vertical pixels.
-		//x in screen is a combination of x and z.
-		//y in screen is a combitantion of x,y and z.
-		//In this example the axis range goes from 0 to 72 (72 units by side)
-		//so the center is at screen position 144,21
-		objetos_zona_1[0] = xyz_objetos_zona_1[bloq][0]; //source x
-		objetos_zona_1[1] = xyz_objetos_zona_1[bloq][1]; //source y
-		objetos_zona_1[2] = 144 + ((x - z) << 1);  //destination x = [ xorigin + (x-z)*2 ]
-		objetos_zona_1[3] = 21 + (x + z) - (y << 1); //destination y = [ yorigin + (x+z) - 2*y ]
-		objetos_zona_1[4] = xyz_objetos_zona_1[bloq][5]; //width
-		objetos_zona_1[5] = xyz_objetos_zona_1[bloq][6]; //height
+			//change the sprite of the ball by direction
+			if (sentido == AUM_X) {
+				pos_objeto[0] = xyz_bola_b_zona_1[0];
+				pos_objeto[1] = xyz_bola_b_zona_1[1];
+			}
+			if (sentido == AUM_Z) {
+				pos_objeto[0] = xyz_bola_a_zona_1[0];
+				pos_objeto[1] = xyz_bola_a_zona_1[1];
+			}
+			if (sentido == DIS_X) {
+				pos_objeto[0] = xyz_bola_d_zona_1[0];
+				pos_objeto[1] = xyz_bola_d_zona_1[1];
+			}
+			if (sentido == DIS_Z) {
+				pos_objeto[0] = xyz_bola_c_zona_1[0];
+				pos_objeto[1] = xyz_bola_c_zona_1[1];
+			}
+			pos_objeto[4] = objetos_zona_1[0][5];
+			pos_objeto[5] = objetos_zona_1[0][6];
+		}
 
+		m = dist[n][1];
+
+		//if the object is not the ball.
+		if (m == 1 || m == 2 || m == 3 || m == 4)
+		{
+			x = objetos_zona_1[m][2];
+			y = objetos_zona_1[m][3];
+			z = objetos_zona_1[m][4];
+
+			pos_objeto[0] = objetos_zona_1[m][0];
+			pos_objeto[1] = objetos_zona_1[m][1];
+			pos_objeto[4] = objetos_zona_1[m][5];
+			pos_objeto[5] = objetos_zona_1[m][6];
+		}
+
+		pos_objeto[2] = 144 + ((x - z) << 1); //calculate the screen x = xorigin + (x-z) * 2;
+		pos_objeto[3] = 21 + (x + z) - (y << 1); //calculate the scren y = yorigin + (x+z) - y*2;
+
+		//render the object
 		SDL_Rect src, dest;
-		src.x = objetos_zona_1[0];
-		src.y = objetos_zona_1[1];
-		dest.x = objetos_zona_1[2];
-		dest.y = objetos_zona_1[3];
-		src.w = dest.w = objetos_zona_1[4];
-		src.h = dest.h = objetos_zona_1[5];
+		src.x = pos_objeto[0];
+		src.y = pos_objeto[1];
+		dest.x = pos_objeto[2];
+		dest.y = pos_objeto[3];
+		src.w = dest.w = pos_objeto[4];
+		src.h = dest.h = pos_objeto[5];
 		SDL_SetTextureAlphaMod(AssetsManager::Instance()->getTexture("filma"), 255);
-		SDL_RenderCopyEx(g_pRenderer, AssetsManager::Instance()->getTexture("filma"), &src, &dest, 0.0, 0, SDL_FLIP_NONE); //Load current frame on the buffer game.
+		SDL_RenderCopyEx(g_pRenderer, AssetsManager::Instance()->getTexture("filma"), &src, &dest, 0.0, 0, SDL_FLIP_NONE);
+
+		//if the ball is jumping make it fall.
+		if (!InputHandler::Instance()->isKeyDown(SDL_SCANCODE_SPACE) && objetos_zona_1[0][3] > 0 && y > 0 &&
+			(x1 - x0 >= 8 || x0 - x1 >= 8 || y1<y0 - 8 || y1>y0 - 8 || z1 - z0 >= 8 || z0 - z1 >= 8) &&
+			(x2 - x0 >= 8 || x0 - x2 >= 8 || y2<y0 - 8 || y2>y0 - 8 || z2 - z0 >= 8 || z0 - z2 >= 8) &&
+			(x3 - x0 >= 8 || x0 - x3 >= 8 || y3<y0 - 8 || y3>y0 - 8 || z3 - z0 >= 8 || z0 - z3 >= 8) &&
+			(x4 - x0 >= 8 || x0 - x4 >= 8 || y4<y0 - 8 || y4>y0 - 8 || z4 - z0 >= 8 || z0 - z4 >= 8)) {
+			objetos_zona_1[0][3]--;
+		}
 	}
 
 	// show the window

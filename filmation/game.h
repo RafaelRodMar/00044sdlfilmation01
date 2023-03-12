@@ -6,6 +6,14 @@
 #include "AssetsManager.h"
 #include "InputHandler.h"
 
+#define NUM_OBJETOS	 5
+
+#define AUM_X		25
+#define AUM_Z		30
+#define DIS_X		24
+#define DIS_Z		16
+#define SALTO       57
+#define ESC		     1
 #define ULTIMO		-1
 
 class Game {
@@ -175,20 +183,27 @@ public:
 			   ULTIMO
 	};
 
-	int   objetos_zona_1[6];	  /* array para las coordenadas de los cubos */
+	int pos_objeto[6];
+	int dist[NUM_OBJETOS][2];
+	int sentido = AUM_X;
 
-	//0,1: source x,y
-	//2,3,4: destination x,y,z
+	//0,1: x,y position in source image
+	//2,3,4: x,y,z position on screen
 	//5,6: width, height
-	//7: movement over the x axis.
-	int   xyz_objetos_zona_1[5][8] = { 64,0,  0, 0, 0, 32,30, +2, /* cubo rojo   */
-					   96,0,  8, 0,24, 32,30, +2, /* cubo verde  */
-					  128,0, 16, 0,48, 32,30, -2, /* cubo azul   */
-					  160,0, 24, 0,72, 32,30, +2, /* cubo marr¢n */
-					  ULTIMO
+	int   objetos_zona_1[NUM_OBJETOS][7] = { 
+					 64,  0,  0, 0, 0, 32,30, /*BALL*/
+					  0,170, 28, 0,44, 32,30, /*cubes*/
+					 32,170, 28, 8,44, 32,30,
+					 64,170, 52, 0,44, 32,30,
+					 96,170, 52, 8,44, 32,30
 	};
 
-	int bloq, cubo, x, y, z;
+	int   xyz_bola_a_zona_1[7] = { 64,  0,  0, 0, 0, 32,30 };
+	int   xyz_bola_b_zona_1[7] = { 96,  0,  0, 0, 0, 32,30 };
+	int   xyz_bola_c_zona_1[7] = { 128,  0,  0, 0, 0, 32,30 };
+	int   xyz_bola_d_zona_1[7] = { 160,  0,  0, 0, 0, 32,30 };
+
+	int bloq, cubo, x, y, z, temp, n, m, x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
 
 private:
 	Game();
